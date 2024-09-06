@@ -1,3 +1,20 @@
-<h1>Selamat Datang di Aplikasi {{ app_name }}</h1>
-<p>Nama: {{ student_name }}</p>
-<p>Kelas: {{ class_name }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>BepeShop</title>
+</head>
+<body>
+    <h1>Hi, Bepe-ers! Welcome to BepeShop</h1>
+    <small>{nama} from {kelas}</small>
+    <h2>{nama} from {kelas}</h2>
+    <h1>Item List</h1>
+    <ul>
+        {% for item in items %}
+        <li>
+            <h2>{{ item.name }} - ${{ item.price }}</h2>
+            <p>{{ item.description }}</p>
+            {% endfor %}
+        </li>
+    </ul>
+</body>
+</html>
