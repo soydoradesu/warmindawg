@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def home(request):
+def show_home(request):
     context = {
         'nama': 'Valentino Kim Fernando',  
         'kelas': 'PBP F',
