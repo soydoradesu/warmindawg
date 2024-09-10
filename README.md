@@ -5,9 +5,9 @@ Bepeshop is a very simple app created using django
 
 # Jawaban Soal Tugas 2
 
-**Nama**: Valentino Kim Fernando 
+**Nama**: Valentino Kim Fernando <br />
+**NPM**: 2306275771 <br />
 **Kelas**: PBP F 
-**NPM**: 2306275771
 
 ## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 Berikut merupakan bagian pengimplementasian web:
