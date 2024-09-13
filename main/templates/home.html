@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warmindawg</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
@@ -19,7 +20,7 @@
     <ul>
         {% for item in items %}
         <li>
-            <img src="{{ item.image }}" alt="{{ item.name }}">
+            <img src="{{ item.image }}" alt="{{ item.name }}" class="fixed-image">
             <h2>{{ item.name }}</h2>
             <p class="price">Rp{{ item.price }}.000</p>
             <p class="product-description">{{ item.description }}</p>
@@ -28,4 +29,4 @@
     </ul>
 </body>
 </html>
-{% endblock content %}
+{% endblock content %} 
