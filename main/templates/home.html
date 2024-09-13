@@ -12,7 +12,8 @@
     <ul>
         {% for item in items %}
         <li>
-            <h2>{{ item.name }} - ${{ item.price }}</h2>
+            <h2>{{ item.name }} - Rp{{ item.price }}.000</h2>
+            <img src="{{ item.image }}" alt="{{ item.name }}" width="100">
             <p>{{ item.description }}</p>
             {% endfor %}
         </li>
