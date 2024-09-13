@@ -28,10 +28,9 @@ STATICFILES_DIRS = [
 SECRET_KEY = 'django-insecure-(com(cg!aoe5qa7@v##nhd+a0ff(=&ytooh*gey-28aj23ybe$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "valentino-kim-warmindawg.pbp.cs.ui.ac.id"]
-
 
 # Application definition
 
@@ -127,3 +126,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
