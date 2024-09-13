@@ -8,6 +8,7 @@ header {
     background: #f4f4f4;
     padding: 10px 20px;
     text-align: center;
+    margin-bottom: 20px
 }
 ul {
     display: flex;
@@ -49,7 +50,40 @@ h1, h2 {
 .add-menu button {
     padding: 10px 20px;
     border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
     border: none;
     color: white;
     cursor: pointer;
+}
+.form-container {
+    text-align: center; 
+    width: 100%;  
+    padding: 20px;  
+}
+.menu-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.menu-form > div {
+    display: flex;
+    flex-direction: column;
+    width: 32%;
+    row-gap: 12px;
+    margin-bottom: 8px;
+    padding: 20px;
+    border-radius: 8px;
+}
+.menu-form > div > div {
+    display: flex;
+    flex-direction: column;
+}
+.menu-form > div > div > input,textarea{
+    padding: 10px;
+    border-radius: 5px;
+}
+.menu-form > div > div > label{
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: bold;
 }

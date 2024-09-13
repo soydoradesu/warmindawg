@@ -1,8 +1,38 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Add Menu Item</button>
-</form>
+<div class="form-container">
+    <header>
+        <img src="{% static 'Warmindawg_logo.png' %}" alt="Warmindawg Logo" class="logo">
+    </header>
+    <form method="post" enctype="multipart/form-data" class="menu-form">
+        {% csrf_token %}
+        <div>
+            <div>
+                <label for="name">Nama:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div>
+            <label for="price">Harga (Rp[harga].000):</label>
+            <input type="number" id="price" name="price" required>
+            </div>
+
+            <div>
+            <label for="description">Deskripsi:</label>
+            <textarea id="description" name="description" required></textarea>
+            </div>
+
+            <div>
+            <label for="image">Image (URL):</label>
+            <input type="url" id="image" name="image" required>
+            </div>
+        </div>
+        <div class="add-menu" style="text-align: center;">
+            <button type ="submit" style="background: #e55300;">
+                <strong>Simpan Menu</strong>
+            </button>
+        </div>
+    </form>
+</div>
 {% endblock %}

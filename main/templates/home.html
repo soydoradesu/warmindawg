@@ -2,11 +2,7 @@
 {% load static %}
 {% block content %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warmindawg</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
     <header>
@@ -14,7 +10,9 @@
     </header>
     <div class="add-menu" style="text-align: center;">
         <a href="{% url 'home:add_menu_item' %}">
-            <button style="background: #e55300;">Tambahkan Menu</button>
+            <button style="background: #e55300;">
+                <strong>Tambahkan Menu</strong>
+            </button>
         </a>
     <h2 style="text-align: center;">Menu Warmindawg hari ini:</h2>
     <ul>
