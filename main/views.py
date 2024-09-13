@@ -68,3 +68,8 @@ def menu_detail_json(request, pk):
 def menu_detail_xml(request, pk):
     data = serializers.serialize('xml', [Item.objects.get(pk=pk)])
     return HttpResponse(data, content_type='application/xml')
+
+def delete_item(request, pk):
+    item = Item.objects.get(pk=pk)
+    item.delete()
+    return redirect('/')
