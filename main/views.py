@@ -54,17 +54,17 @@ def add_menu_item(request):
     return render(request, 'add_menu.html', {'form': form})
 
 def menu_list_json(request):
-    data = serializers('json', Item.objects.all())
+    data = serializers.serialize('json', Item.objects.all())
     return HttpResponse(data, content_type='application/json')
 
 def menu_list_xml(request):
-    data = serializers('xml', Item.objects.all())
+    data = serializers.serialize('xml', Item.objects.all())
     return HttpResponse(data, content_type='application/xml')
 
 def menu_detail_json(request, pk):
-    data = serializers('json', [Item.objects.get(pk=pk)])
+    data = serializers.serialize('json', [Item.objects.get(pk=pk)])
     return HttpResponse(data, content_type='application/json')
 
 def menu_detail_xml(request, pk):
-    data = serializers('xml', [Item.objects.get(pk=pk)])
+    data = serializers.serialize('xml', [Item.objects.get(pk=pk)])
     return HttpResponse(data, content_type='application/xml')
