@@ -45,7 +45,7 @@ def show_home(request):
 
 def add_menu_item(request):
     if request.method == 'POST':
-        form = MenuForm(request.POST, request.FILES)
+        form = MenuForm(request.POST, request.FILES or None)
         if form.is_valid():
             form.save()
             return redirect('/')
