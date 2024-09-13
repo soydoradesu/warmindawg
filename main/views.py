@@ -1,4 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse
+from .models import Item
+from django.core import serializers
+from .forms import MenuForm
 
 def show_home(request):
     context = {
@@ -15,3 +19,29 @@ def show_home(request):
         ],
     }
     return render(request, 'home.html', context)
+
+def add_menu_item(request):
+    if request.method == 'POST':
+        form = MenuForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('menu_list')  # Adjust the redirect to wherever you wish
+    else:
+        form = MenuForm()
+    return render(request, 'add_menu.html', {'form': form})
+
+def menu_list_json(request):
+    data = serializers('json', Item.objects.all())
+    return HttpResponse(data, content_type='application/json')
+
+def menu_list_xml(request):
+    data = serializers('xml', Item.objects.all())
+    return HttpResponse(data, content_type='application/xml')
+
+def menu_detail_json(request, pk):
+    data = serializers('json', [Item.objects.get(pk=pk)])
+    return HttpResponse(data, content_type='application/json')
+
+def menu_detail_xml(request, pk):
+    data = serializers('xml', [Item.objects.get(pk=pk)])
+    return HttpResponse(data, content_type='application/xml')

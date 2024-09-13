@@ -1,22 +1,31 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
 <head>
-    <title>BepeShop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warmindawg</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h1>Hi, Bepe-ers! Welcome to BepeShop</h1>
-    <strong>{{ nama }} from {{ kelas }}</strong>
-    <br></br>
-    <h1>Item List</h1>
+    <header>
+        <img src="{% static 'Warmindawg_logo.png' %}" alt="logo" class="logo">    
+    </header>
+    <div class="add-menu" style="text-align: center;">
+        <a href="{% url 'home:add_menu_item' %}">
+            <button style="background: #e55300;">Tambahkan Menu</button>
+        </a>
+    <h2 style="text-align: center;">Menu Warmindawg hari ini:</h2>
     <ul>
         {% for item in items %}
         <li>
-            <h2>{{ item.name }} - Rp{{ item.price }}.000</h2>
-            <img src="{{ item.image }}" alt="{{ item.name }}" width="100">
-            <p>{{ item.description }}</p>test
-            {% endfor %}
+            <img src="{{ item.image }}" alt="{{ item.name }}">
+            <h2>{{ item.name }}</h2>
+            <p class="price">Rp{{ item.price }}.000</p>
+            <p class="product-description">{{ item.description }}</p>
         </li>
+        {% endfor %}
     </ul>
 </body>
 </html>
+{% endblock content %}
