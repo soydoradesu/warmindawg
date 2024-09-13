@@ -1,7 +1,7 @@
-# BepeShop (an e-commerce django app)
-Bepeshop is a very simple app created using django
+# Warmindawg (A Warmindo with extra spice 🌶️)
+Warmindawg is a very simple app made with django
 
-**Link:** [http://pbp.cs.ui.ac.id/valentino.kim/ecommercepbp/](http://pbp.cs.ui.ac.id/valentino.kim/ecommercepbp/)
+**Link:** [http://valentino-kim-warmindawg.pbp.cs.ui.ac.id/](http://valentino-kim-warmindawg.pbp.cs.ui.ac.id/)
 
 # Jawaban Soal Tugas 2
 

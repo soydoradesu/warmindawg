@@ -1,2 +1,2 @@
 release: python3 manage.py migrate --noinput
-web: gunicorn warmindawg.wsgi
+web: gunicorn e_commerce_pbp.wsgi
