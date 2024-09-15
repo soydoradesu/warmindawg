@@ -39,6 +39,7 @@ def show_home(request):
         'nama': 'Valentino Kim Fernando',
         'kelas': 'PBP F',
         'items': all_items,
+        'logo' : 'https://i.imgur.com/qm2xL9P.png'
     }
 
     return render(request, 'home.html', context)
