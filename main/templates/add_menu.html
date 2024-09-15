@@ -5,30 +5,19 @@
     <header>
         <img src="{% static 'Warmindawg_logo.png' %}" alt="Warmindawg Logo" class="logo">
     </header>
-    <form method="post" enctype="multipart/form-data" class="menu-form">
+    <form method="POST" class="flex flex-col gap-5">
         {% csrf_token %}
-        <div>
-            <div>
-                <label for="name">Nama:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-
-            <div>
-                <label for="price">Harga (Rp[harga].000):</label>
-                <input type="number" id="price" name="price" required>
-            </div>
-
-            <div>
-                <label for="description">Deskripsi:</label>
-                <textarea id="description" name="description" required></textarea>
-            </div>
-
-            <div>
-                <label for="image">Image (URL):</label>
-                <input type="url" id="image" name="image" required>
-            </div>
+        <div class="grid grid-cols-2 gap-4">
+          {% for field in form %}
+          <div class="flex flex-col gap-2 {% if field.name == 'description' %}col-span-2 items-center{% endif %}">
+            <label for="{{ field.id_for_label }}" class="font-bold"
+              >{{ field.label }}</label
+            >
+            <div>{{ field }}</div>
+          </div>
+          {% endfor %}
         </div>
-        <div class="add-menu" style="text-align: center;">
+        <div class="add-menu" style="text-align: center; padding-top: 20px;">
             <button type ="submit" style="background: #e55300;">
                 <strong>Simpan Menu</strong>
             </button>

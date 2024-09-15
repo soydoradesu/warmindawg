@@ -9,7 +9,7 @@ Warmindawg is a very simple app made with django
 **NPM**: 2306275771 <br />
 **Kelas**: PBP F 
 
-## 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+## 1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 Berikut merupakan bagian pengimplementasian web:
 - Buat directory terlebih dahulu, lalu install requirements pada `requirements.txt `Membuat sebuah proyek django baru dengan melakukan `django-admin startproject e_commerce_pbp .`
 - Lalu dilanjut dengan membuat app main dengan `python manage.py startapp main`
@@ -22,20 +22,22 @@ Berikut merupakan bagian pengimplementasian web:
 - Selanjutnya app dideploy ke PWS --> `(pbp.cs.ui.ac.id)` 
 - App bisa dipakai :D!
 
-## 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
+## 2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
 Bagan request-response dari client ke aplikasi Django:
 
    <img src="public/PBP_Tugas 2.png">
 
-## 3. Jelaskan fungsi git dalam pengembangan perangkat lunak!
+## 3. Jelaskan fungsi dari method 'is_valid()' pada form Django dan mengapa kita membutuhkan method tersebut?
 Git berfungsi untuk version control dalam pengembangan perangkat lunak. Di antaranya:
 - Git memungkinkan pelacakan dan manajemen perubahan kode sumber secara efisien.
 - Git memfasilitasi kerja sama antar pengembang dengan menggunakan cabang (branches) untuk memisahkan perubahan.
 - Dengan adanya branching, git mendukung eksperimen dan pengembangan fitur baru tanpa mengganggu kode utama.
 - Git Mnyediakan backup penuh dari semua history kode, memudahkan dilakukannya pemulihan data.
 
-## 4. Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
+## 4. Mengapa kita membutuhkan 'csrf_token' saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan 'csrf_token' pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
 Django menjadi framework awal yang dipelajari karena arsitekturnya yang terpadu, mudah digunakan (karena menggunakan python), mudah dibaca, serta memiliki struktur MVT (Model-View-Template) yang membantu memahami alur pengembangan web secara fundamental.
 
-## 5. Mengapa model pada Django disebut sebagai ORM?
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
 Model Django disebut ORM karena memetakan objek Python ke dalam tabel di database tanpa harus menulis query SQL secara langsung.
+
+## Postman Documentation

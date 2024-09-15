@@ -30,7 +30,7 @@ def show_home(request):
     db_items = Item.objects.all()
 
     # Converting QuerySet to list of dicts to unify with default items format
-    items_from_db = [{'name': item.name, 'price': item.price, 'description': item.description, 'image': item.image.url} for item in db_items]
+    items_from_db = [{'name': item.name, 'price': item.price, 'description': item.description, 'image': item.image} for item in db_items]
 
     # Combining default items with database items
     all_items = default_items + items_from_db

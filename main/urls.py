@@ -13,4 +13,4 @@ urlpatterns = [
     path('api/menu/xml/<int:pk>/', menu_detail_xml, name='menu_detail_xml'),
     path('add-menu/', add_menu_item, name='add_menu_item'),
     path('delete-item/<int:pk>/', delete_item, name='delete_item'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
