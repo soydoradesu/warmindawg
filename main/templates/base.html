@@ -1,5 +1,69 @@
 {% load static %}
 <!DOCTYPE html>
+<style>
+  body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding-top: 12;
+  background: #f4f4f4;
+}
+header {
+  background: #f4f4f4;
+  padding: 10px 20px;
+  text-align: center;
+  margin-bottom: 20px
+}
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+li {
+  background: white;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 300px;
+}
+img.fixed-image {
+  width: 150px;  
+  height: 150px; 
+  object-fit: cover; 
+  border-radius: 5px; 
+}
+img.logo {
+  width: 300px; 
+  height: auto; 
+}
+h1, h2 {
+  color: #333;
+}
+.product-description {
+  color: #666;
+  font-size: 14px;
+}
+.price {
+  color: #e55300;
+  font-size: 16px;
+  font-weight: bold;
+}
+.add-menu button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.form-container {
+  text-align: center; 
+  width: 100%;  
+  padding: 20px;  
+}
+</style>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
