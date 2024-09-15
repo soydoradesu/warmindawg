@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from .models import Item
 from django.core import serializers
 from .forms import MenuForm
