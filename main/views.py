@@ -1,4 +1,5 @@
 import datetime
+from itertools import chain
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -10,22 +11,32 @@ from .models import Item
 from django.core import serializers
 from .forms import MenuForm
 
+
 @login_required(login_url='/login')
 def show_home(request):
     default_items = [
         {
+            'user': {
+                'username': 'Valen (default)'
+            },
             'name': 'Es Kulkul Uni Bakwan', 
             'price': 70, 
             'description': 'Es Kulkul Uni Bakwan, es asli dari Uni Bakwan Onde Mande',
             'image': 'https://i.pinimg.com/736x/42/b1/22/42b12243ca70053a7c6f22241787f271.jpg'
         },
         {
+            'user': {
+                'username': 'Valen (default)'
+            },
             'name': 'Ayam Goreng Bunda Mewing', 
             'price': 25, 
             'description': 'Merupakan salah satu ayam goreng langka yang dibuat oleh bunda yang mewing.',
             'image': 'https://steamuserimages-a.akamaihd.net/ugc/2270441744978599352/3A97A06E3670819C1E5A4525DED7FBF4DAC5DE21/?imw=512&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false'
         },
         {
+            'user': {
+                'username': 'Valen (default)'
+            },
             'name': 'Mie Keriting', 
             'price': 16, 
             'description': 'Mie keriting! AWAS bisa membuatmu giting...',
@@ -36,16 +47,16 @@ def show_home(request):
     # Fetching items from the database
     db_items = Item.objects.all()
 
-    # Converting QuerySet to list of dicts to unify with default items format
-    items_from_db = [{'name': item.name, 'price': item.price, 'description': item.description, 'image': item.image} for item in db_items]
-
     # Combining default items with database items
-    all_items = default_items + items_from_db
+    all_items = list(chain(default_items, db_items))
+
+    my_entry = Item.objects.filter(user=request.user)
 
     context = {
         'nama': 'Valentino Kim Fernando',
         'kelas': 'PBP F',
         'items': all_items,
+        'my_items': my_entry,
         'logo' : 'https://i.imgur.com/qm2xL9P.png',
         'last_login': request.COOKIES['last_login'],
     }
@@ -53,13 +64,14 @@ def show_home(request):
     return render(request, 'home.html', context)
 
 def add_menu_item(request):
-    if request.method == 'POST':
-        form = MenuForm(request.POST, request.FILES or None)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    else:
-        form = MenuForm()
+    form = MenuForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        item_entry = form.save(commit=False)
+        item_entry.user = request.user
+        item_entry.save()
+        return redirect('/')
+    
     return render(request, 'add_menu.html', {'form': form})
 
 def register(request):

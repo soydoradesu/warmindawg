@@ -8,22 +8,25 @@
     <img src="{{ logo }}" alt="logo" class="logo">    
 </header>
 <body>
-    <div class="add-menu" style="text-align: center;">
-        <a href="{% url 'main:logout' %}">
-            <button>Logout</button>
-          </a>
+    <div class="add-menu" style="justify-content: center; text-align: center; display: flex; gap: 20px;">
+        <a href="{% url 'home:logout' %}">
+            <button style="background: #e50000;">
+                <strong>Logout</strong>
+            </button>
+        </a>
         <a href="{% url 'home:add_menu_item' %}">
             <button style="background: #e55300;">
                 <strong>Tambahkan Menu</strong>
             </button>
         </a>
+    </div>
     <p style="text-align: center;">
         🔥🧑🏻‍🍳 Pemasak Warmindawg hari ini: <br /> 
         <strong>
             {{ nama }} dari {{ kelas }}
         </strong>
     </p>
-    <h3>Menu:</h3>
+    <h3 align="center">Menu:</h3>
     <ul>
         {% for item in items %}
         <li>
@@ -31,10 +34,14 @@
             <h2>{{ item.name }}</h2>
             <p class="price">Rp{{ item.price }}.000</p>
             <p class="product-description">{{ item.description }}</p>
+            <p class="product-description">
+                <strong>Added by:</strong> {{ item.user.username }}</p>
         </li>
         {% endfor %}
     </ul>
+    <div align="center">
+        <h5>Username: {{ user.username }}</h5>
+        <h5>Sesi terakhir login: {{ last_login }}</h5>
+    </div>
 </body>
-
-<h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %} 
