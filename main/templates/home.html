@@ -9,6 +9,9 @@
 </header>
 <body>
     <div class="add-menu" style="text-align: center;">
+        <a href="{% url 'main:logout' %}">
+            <button>Logout</button>
+          </a>
         <a href="{% url 'home:add_menu_item' %}">
             <button style="background: #e55300;">
                 <strong>Tambahkan Menu</strong>
@@ -32,5 +35,6 @@
         {% endfor %}
     </ul>
 </body>
-</html>
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %} 
