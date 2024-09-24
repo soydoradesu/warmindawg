@@ -102,7 +102,6 @@ def login_user(request):
    context = {'form': form}
    return render(request, 'login.html', context)
 
-
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('home:login'))
