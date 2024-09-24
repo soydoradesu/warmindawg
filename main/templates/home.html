@@ -39,6 +39,19 @@
         </li>
         {% endfor %}
     </ul>
+    <h3 align="center">Menuku:</h3>
+    <ul>
+        {% for item in my_items %}
+        <li>
+            <img src="{{ item.image }}" alt="{{ item.name }}" class="fixed-image">
+            <h2>{{ item.name }}</h2>
+            <p class="price">Rp{{ item.price }}.000</p>
+            <p class="product-description">{{ item.description }}</p>
+            <p class="product-description">
+                <strong>Added by:</strong> {{ item.user.username }}</p>
+        </li>
+        {% endfor %}
+    </ul>
     <div align="center">
         <h5>Username: {{ user.username }}</h5>
         <h5>Sesi terakhir login: {{ last_login }}</h5>
