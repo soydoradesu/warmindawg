@@ -3,7 +3,7 @@ Warmindawg is a very simple app made with django
 
 **Link:** [http://valentino-kim-warmindawg.pbp.cs.ui.ac.id/](http://valentino-kim-warmindawg.pbp.cs.ui.ac.id/)
 
-# Jawaban Tugas Individu (Update: Tugas Individu 4)
+# Jawaban Tugas Individu (Update: Tugas Individu 5)
 
 **Nama**: Valentino Kim Fernando <br />
 **NPM**: 2306275771 <br />
@@ -94,7 +94,7 @@ Berikut merupakan cara saya mengimplementasikan tugas-tugas pada Tugas Individu 
 <img src="public/apimenuxmlpk.png">
 </details>
 
-<details open>
+<details>
     <summary><h2>Tugas Individu 4</h2></summary>
 
 ## 1. Apa perbedaan antara `HttpResponseRedirect()` dan `redirect()`
@@ -293,4 +293,243 @@ def logout_user(request):
 Secara otomatis, Django akan mengambil username dari active user dan juga variabel last_login dari context pada fungsi `show_home`
 
 - Website bisa dipakai :D
+</details>
+
+<details open>
+    <summary><h2>Tugas Individu 5</h2></summary>
+
+## 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+Ketika beberapa pengaturan CSS diterapkan pada elemen HTML yang sama, CSS akan menentukan pengaturan mana yang akan diutamakan menggunakan sistem keutamaan atau specificity. Berikut adalah urutan keutamaan tersebut:
+
+1. *** Gaya Inline *** (contoh: `style="color: red;"`) dianggap memiliki tingkat prioritas yang paling tinggi.
+2. *** Selector ID *** (contoh: `#header`) memiliki tingkat prioritas yang lebih tinggi dibandingkan class atau elemen.
+3. *** Selector Class *** (contoh: `.menu`) memiliki tingkat prioritas yang lebih tinggi daripada selector tag HTML.
+4. *** Selector Tag *** (contoh: `h1`, `p`) memiliki tingkat prioritas yang paling rendah.
+5. *** Aturan Important *** (`!important`) dapat mengabaikan semua tingkatan prioritas di atas dan memberikan prioritas tertinggi pada properti tertentu.
+
+## 2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+
+Dengan meningkatnya penggunaan perangkat mobile seperti smartphone dan tablet, situs web perlu dapat diakses dan berfungsi dengan baik di berbagai ukuran layar dan resolusi. Responsive design akan menciptakan inklusivitas perangkat, sehingga seluruh perangkat dapat menggunakan app dengan maksimal.
+
+*** Responsive ***
+1. WhatsApp
+2. Discord
+3. Instagram
+
+*** Tidak responsive ***
+1. Web tua yang outdated
+2. https://dequeuniversity.com/library/responsive/1-non-responsive
+
+## 3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+**Margin** adalah ruang yang memisahkan elemen dari elemen lain di sekitarnya. Margin berada di luar batas border. Margin tidak memiliki warna dan sering digunakan untuk menciptakan ruang ekstra antara elemen.
+
+``` css
+div {
+  margin: 20px; /* Memberikan margin seragam di semua sisi */
+  margin-top: 10px; /* Memberikan margin khusus pada sisi atas */
+}
+```
+
+**Border** adalah garis yang mengelilingi elemen, berada di antara margin dan padding. Border bisa diatur ketebalan, gaya, dan warnanya. Border bisa digunakan untuk memberi definisi visual pada elemen.
+
+```css
+div {
+  border: 2px solid black; /* Membuat border solid dengan ketebalan 2px dan warna hitam */
+  border-width: 5px; /* Mengatur ketebalan border */
+  border-style: dashed; /* Membuat border bergaris putus-putus */
+  border-color: red; /* Memberikan warna merah pada border */
+}
+```
+
+**Padding** adalah ruang antara isi dari sebuah elemen dengan batas (border) elemen tersebut. Padding digunakan untuk memberi ruang bernapas di dalam elemen, mempengaruhi ukuran visual elemen tersebut tetapi tidak mengubah dimensi elemen seperti yang ditampilkan oleh browser.
+
+```css
+div {
+  padding: 15px; /* Memberikan padding seragam di semua sisi */
+  padding-left: 5px; /* Memberikan padding khusus pada sisi kiri */
+}
+```
+
+## 4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+
+Flexbox dan Grid Layout adalah dua sistem tata letak CSS yang memudahkan pengaturan elemen dalam halaman web. Berikut merupakan penjelasan dari masing-masing Flexbox dan Grid Layout:
+
+**Flexbox** (Flexible Box) dirancang untuk mengelola tata letak satu dimensi, baik dalam baris maupun kolom, memudahkan penyusunan, penyelarasan, dan distribusi ruang antar item secara fleksibel. Flexbox sangat berguna untuk navigasi, menu, atau elemen yang membutuhkan penyesuaian responsif dalam satu arah. **Grid Layout**, di sisi lain, memungkinkan pembuatan tata letak dua dimensi dengan mengatur baris dan kolom secara simultan, cocok untuk desain kompleks seperti layout halaman utama, galeri foto, atau dashboard aplikasi. Dengan memanfaatkan kedua konsep ini, kita dapat menciptakan desain yang responsif, terstruktur, dan mudah disesuaikan sesuai kebutuhan berbagai perangkat.
+
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+1. Implementasikan fungsi untuk menghapus dan mengedit product.
+- Buatlah fungsi `edit_product_entry` pada `views.py`
+    ```py
+    def edit_menu(request, pk):
+    menu = Item.objects.get(pk=pk)
+
+    form = MenuForm(request.POST or None, instance=menu)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('home:show_home'))
+
+    context = {'form': form}
+    return render(request, "edit_menu.html", context)
+    ```
+- Kemudian, tambahkan fungsi ini pada `urls.py` main
+    ```py
+    ...
+    path('edit-menu/<int:pk>', edit_menu, name='edit_menu'),
+    ...
+    ```
+- Buatlah fungsi `delete_item` pada `views.py`
+    ```py
+    def delete_item(request, pk):
+        item = Item.objects.get(pk=pk)
+        item.delete()
+        return HttpResponseRedirect(reverse('home:show_home'))
+    ```
+- Kemudian, tambahkan fungsi ini pada `urls.py` main
+    ```py
+    ...
+        path('delete/<int:pk>/', delete_item, name='delete_item'),
+    ...
+    ```
+
+2. Menambahkan tailwind ke project
+- Ubah `base.html`-mu menjadi seperti ini
+    ``` html
+    ...
+    <head>
+        {% block meta %} 
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% endblock meta %}
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static '/css/global.css' %}"/>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        {% block content %} {% endblock content %}
+    </body>
+    ...
+    ```
+
+3. Atur `settings.py` sedemikian rupa
+- pada `MIDDLEWARE`, ubah menjadi seperti ini
+    ```py
+    MIDDLEWARE = [
+                'django.middleware.security.SecurityMiddleware',
+                'whitenoise.middleware.WhiteNoiseMiddleware',
+                ...
+                ]
+    ```
+- ubah juga `STATIC_URL`mu menjadi
+    ```py
+    STATIC_URL = '/static/'
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static'
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static'
+    ```
+
+4. Buat direktori `static/css/global.css` untuk file styling sesuai dengan yang diinginkan
+
+5. Buat template baru untuk edit item bernama `edit_menu.html` dengan isi
+```html
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Ubah Menu</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center" style="background-image: url('/static/bg.svg'); background-size: 1600px;">
+  <div class="p-8 bg-white rounded-lg shadow-lg max-w-sm w-full form-style my-20">
+    <img src="{% static 'Warmindawg_logo.png' %}" alt="Warmindawg Logo">
+    <h1 class="text-xl font-bold mb-4 mt-4 text-center">
+      <span class="text-2xl font-extrabold text-red-500">Edit Menu</span>
+    </h1>
+    <form method="POST" action="" class="flex flex-col gap-5">
+      {% csrf_token %}
+      <div class="grid grid-cols-2 gap-4">
+        {% for field in form %}
+        <div class="flex flex-col gap-2 {% if field.name == 'description' %}col-span-2{% endif %}">
+          <label for="{{ field.id_for_label }}" class="font-bold">
+            {{ field.label }}
+          </label>
+          <div>{{ field }}</div>
+          {% if field.errors %}
+          <ul class="list-disc bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mt-2">
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% if field.help_text %}
+          <p class="text-xs text-gray-600">{{ field.help_text }}</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="add-menu text-center pt-5">
+        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:shadow-outline">
+          <strong>Simpan Menu</strong>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
+```
+7. Style page" lain supaya lebih estetik
+
+8. Buatlah navbar dengan pertama membuat `navbar.html` pada templates di root. lalu diisi dengan:
+```html
+<nav class="relative flex flex-col">
+    <div class="h-24 flex justify-between items-center px-100 px-12" style="background-color:#E82E31;">
+        <img src="../static/Warmindawg_blue.svg">
+
+        <!-- Hamburger Menu Button for Mobile -->
+        <div class="md:hidden">
+            <button id="menu-toggle" class="text-white focus:outline-none">
+                <!-- Icon for the Hamburger Menu -->
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menu Links (Shown on Medium Screens and Above) -->
+        <div class="hidden md:flex space-x-12">
+            <a href="#" class="text-white text-xl font-bold hover:text-gray-300 hover:underline transition duration-300">Home</a>
+            <a href="#" class="text-white text-xl font-bold hover:text-gray-300 hover:underline transition duration-300">Menus</a>
+            <a href="#" class="text-white text-xl font-bold hover:text-gray-300 hover:underline transition duration-300">Profile</a>
+        </div>
+    </div>
+
+    <!-- Dropdown Menu for Mobile (Absolute) -->
+    <div id="menu" class="hidden absolute top-32 right-12 rounded-lg w-40 bg-red-600 md:hidden flex flex-col space-y-2 py-4 px-4 border-4 border-red-800">
+        <a href="#" class="text-white text-xl font-bold hover:text-gray-300 transition duration-300">Home</a>
+        <a href="#" class="text-white text-xl font-bold hover:text-gray-300 transition duration-300">Menus</a>
+        <a href="#" class="text-white text-xl font-bold hover:text-gray-300 transition duration-300">Profile</a>
+    </div>
+
+    <img src="../static/Warmindawg_bwh.svg" class="-translate-y-2">
+</nav>
+
+<script>
+    // JavaScript to toggle the visibility of the menu on smaller screens
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+
+    menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>
+```
+Lalu menggunakan {% include navbar.html %} pada template yang ingin dipakaikan navbar
+
+Page dapat digunakan!
 </details>
