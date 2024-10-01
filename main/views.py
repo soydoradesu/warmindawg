@@ -1,6 +1,6 @@
 import datetime
 from itertools import chain
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
@@ -124,7 +124,22 @@ def menu_detail_xml(request, pk):
     data = serializers.serialize('xml', [Item.objects.get(pk=pk)])
     return HttpResponse(data, content_type='application/xml')
 
+def edit_menu(request, pk):
+    # Get mood entry berdasarkan id
+    menu = Item.objects.get(pk=pk)
+
+    # Set mood entry sebagai instance dari form
+    form = MenuForm(request.POST or None, instance=menu)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('home:show_home'))
+
+    context = {'form': form}
+    return render(request, "edit_menu.html", context)
+
 def delete_item(request, pk):
     item = Item.objects.get(pk=pk)
     item.delete()
-    return redirect('/')
+    return HttpResponseRedirect(reverse('home:show_home'))

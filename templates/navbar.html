@@ -1,0 +1,42 @@
+<!-- Navbar -->
+<nav class="relative flex flex-col">
+    <div class="h-24 flex justify-between items-center px-100 px-12" style="background-color:#E82E31;">
+        <img src="../static/Warmindawg_blue.svg">
+
+        <!-- Hamburger Menu Button for Mobile -->
+        <div class="md:hidden">
+            <button id="menu-toggle" class="text-white focus:outline-none">
+                <!-- Icon for the Hamburger Menu -->
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menu Links (Shown on Medium Screens and Above) -->
+        <div class="hidden md:flex space-x-12">
+            <a href="#" class="text-white text-xl font-bold hover:text-gray-300 hover:underline transition duration-300">Home</a>
+            <a href="#" class="text-white text-xl font-bold hover:text-gray-300 hover:underline transition duration-300">Menus</a>
+            <a href="#" class="text-white text-xl font-bold hover:text-gray-300 hover:underline transition duration-300">Profile</a>
+        </div>
+    </div>
+
+    <!-- Dropdown Menu for Mobile (Absolute) -->
+    <div id="menu" class="hidden absolute top-32 right-12 rounded-lg w-40 bg-red-600 md:hidden flex flex-col space-y-2 py-4 px-4 border-4 border-red-800">
+        <a href="#" class="text-white text-xl font-bold hover:text-gray-300 transition duration-300">Home</a>
+        <a href="#" class="text-white text-xl font-bold hover:text-gray-300 transition duration-300">Menus</a>
+        <a href="#" class="text-white text-xl font-bold hover:text-gray-300 transition duration-300">Profile</a>
+    </div>
+
+    <img src="../static/Warmindawg_bwh.svg" class="-translate-y-2">
+</nav>
+
+<script>
+    // JavaScript to toggle the visibility of the menu on smaller screens
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+
+    menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+    });
+</script>

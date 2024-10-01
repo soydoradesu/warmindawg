@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% include 'navbar.html' %}
 <head>
     <title>Warmindawg</title>
 </head>
-<header>
-    <img src="{{ logo }}" alt="logo" class="logo">    
-</header>
 <body>
     <div class="add-menu" style="justify-content: center; text-align: center; display: flex; gap: 20px;">
         <a href="{% url 'home:logout' %}">
@@ -26,6 +24,9 @@
             {{ nama }} dari {{ kelas }}
         </strong>
     </p>
+    {% if not items %}
+        <h3 align="center">Tidak ada menu yang tersedia</h3>
+    {% else %}
     <h3 align="center">Menu:</h3>
     <ul>
         {% for item in items %}
@@ -49,9 +50,22 @@
             <p class="product-description">{{ item.description }}</p>
             <p class="product-description">
                 <strong>Added by:</strong> {{ item.user.username }}</p>
+                <div style="justify-content: center; text-align: center; display: flex; gap: 20px;">
+                    <a href="{% url 'home:edit_menu' item.pk %}">
+                        <button style="background: #e55300;">
+                            <strong>Ubah</strong>
+                        </button>
+                    </a>
+                    <a href="{% url 'home:delete_item' item.pk %}">
+                        <button style="background: #ff0000;">
+                            <strong>Hapus</strong>
+                        </button>
+                    </a>
+                </div>
         </li>
         {% endfor %}
     </ul>
+    {% endif %}
     <div align="center">
         <h5>Username: {{ user.username }}</h5>
         <h5>Sesi terakhir login: {{ last_login }}</h5>

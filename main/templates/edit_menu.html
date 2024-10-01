@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="form-container">
+    <header>
+        <img src="https://i.imgur.com/qm2xL9P.png" alt="logo" class="logo">    
+    </header>
+    <form method="POST" class="flex flex-col gap-5">
+        {% csrf_token %}
+        <div class="grid grid-cols-2 gap-4">
+          {% for field in form %}
+          <div class="flex flex-col gap-2 {% if field.name == 'description' %}col-span-2 items-center{% endif %}">
+            <label for="{{ field.id_for_label }}" class="font-bold"
+              >{{ field.label }}</label
+            >
+            <div>{{ field }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="add-menu" style="text-align: center; padding-top: 20px;">
+            <button type ="submit" style="background: #e55300;">
+                <strong>Simpan Menu</strong>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
