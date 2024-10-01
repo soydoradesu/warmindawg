@@ -6,14 +6,14 @@
     <title>Warmindawg</title>
 </head>
 <body>
-    <div class="add-menu" style="justify-content: center; text-align: center; display: flex; gap: 20px;">
-        <a href="{% url 'home:logout' %}">
-            <button style="background: #e50000;">
+    <div class="add-menu" style="justify-content: center; text-align: center; display: flex; gap: 20px; margin-bottom: 20px">
+        <a href="{% url 'home:logout' %}" >
+            <button class="w-full px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
                 <strong>Logout</strong>
             </button>
         </a>
         <a href="{% url 'home:add_menu_item' %}">
-            <button style="background: #e55300;">
+            <button class="w-full px-4 py-2 text-white bg-orange-500 hover:bg-orange-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-opacity-50">
                 <strong>Tambahkan Menu</strong>
             </button>
         </a>
@@ -25,39 +25,63 @@
         </strong>
     </p>
     {% if not items %}
-        <h3 align="center">Tidak ada menu yang tersedia</h3>
+        <h3 class="text-center pt-8 text-xl text-red-500">Tidak ada menu yang tersedia</h3>
     {% else %}
-    <h3 align="center">Menu:</h3>
+    <h3 class="text-center pt-8 text-xl text-red-500">
+        <strong>Menu:</strong>
+    </h3>
     <ul>
         {% for item in items %}
         <li>
             <img src="{{ item.image }}" alt="{{ item.name }}" class="fixed-image">
-            <h2>{{ item.name }}</h2>
-            <p class="price">Rp{{ item.price }}.000</p>
-            <p class="product-description">{{ item.description }}</p>
-            <p class="product-description">
-                <strong>Added by:</strong> {{ item.user.username }}</p>
+            <p class="pt-4">
+            <strong>{{ item.name }}</strong>
+            </p>
+            <p class="text-red-500 font-bold">
+                Rp{{ item.price }}.000
+            </p>
+            <p class="product-description pt-4">
+                {{ item.description }}
+            </p>
+            <p class="product-description pt-4">
+                <strong>Added by:</strong> {{ item.user.username }}
+            </p>
         </li>
         {% endfor %}
     </ul>
-    <h3 align="center">Menuku:</h3>
+    {% endif %}
+    <h3 class="text-center pt-8 text-xl text-red-500">
+        <strong>Menuku:</strong>
+    </h3>
+    {% if not my_items %}
+        <h3 class="text-center pt-4">
+            <strong>Kamu belum memasukkan menu!</strong>
+        </h3>
+    {% else %}
     <ul>
         {% for item in my_items %}
         <li>
             <img src="{{ item.image }}" alt="{{ item.name }}" class="fixed-image">
-            <h2>{{ item.name }}</h2>
-            <p class="price">Rp{{ item.price }}.000</p>
-            <p class="product-description">{{ item.description }}</p>
-            <p class="product-description">
-                <strong>Added by:</strong> {{ item.user.username }}</p>
-                <div style="justify-content: center; text-align: center; display: flex; gap: 20px;">
+            <p class="pt-4">
+            <strong>{{ item.name }}</strong>
+            </p>
+            <p class="text-red-500 font-bold">
+                Rp{{ item.price }}.000
+            </p>
+            <p class="product-description pt-4">
+                {{ item.description }}
+            </p>
+            <p class="product-description pt-4">
+                <strong>Added by:</strong> {{ item.user.username }}
+            </p>
+                <div style="justify-content: center; text-align: center; display: flex; gap: 12px; margin-bottom: 20px" class="pt-4">
                     <a href="{% url 'home:edit_menu' item.pk %}">
-                        <button style="background: #e55300;">
+                        <button  class="w-full px-10 py-2 text-white bg-orange-500 hover:bg-orange-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-opacity-50">
                             <strong>Ubah</strong>
                         </button>
                     </a>
                     <a href="{% url 'home:delete_item' item.pk %}">
-                        <button style="background: #ff0000;">
+                        <button class="w-full px-10 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
                             <strong>Hapus</strong>
                         </button>
                     </a>
@@ -66,7 +90,7 @@
         {% endfor %}
     </ul>
     {% endif %}
-    <div align="center">
+    <div class="text-center pt-20">
         <h5>Username: {{ user.username }}</h5>
         <h5>Sesi terakhir login: {{ last_login }}</h5>
     </div>

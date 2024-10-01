@@ -5,27 +5,48 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="login">
-  <h1>Login</h1>
+<div class="min-h-screen flex items-center justify-center" style="background-image: url('/static/bg.svg');  background-size: 1600px;">
+  <div class="p-8 bg-white rounded-lg shadow-lg max-w-sm w-full form-style">
+    <img src="../static/Warmindawg_logo.png">
+    <h1 class="text-xl font-bold mb-4 mt-4 text-center">
+      <span class="text-2xl font-extrabold text-red-500">Oy!</span> yuk login dulu
+    </h1>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="space-y-4">
+        {% for field in form %}
+        <div>
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.help_text %}
+          <p class="text-xs text-gray-600">{{ field.help_text }}</p>
+          {% endif %}
+          {% for error in field.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endfor %}
+        <div>
+          <button type="submit" class="w-full px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+            <strong>Masuk</strong>
+          </button>
+        </div>
+      </div>
+    </form>
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input class="btn login_btn" type="submit" value="Login" /></td>
-      </tr>
-    </table>
-  </form>
-
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} Don't have an account yet?
-  <a href="{% url 'home:register' %}">Register Now</a>
+    {% if messages %}
+    <div class="mt-4">
+      <ul>
+        {% for message in messages %}
+        <li class="text-sm text-red-600">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    <p class="mt-4 text-sm text-center">
+      Belum pernah nge-Warmindawg? <br />
+      <a href="{% url 'home:register' %}" class="text-red-500 hover:text-red-600 hover:font-semibold">Kenalan yuk</a>
+    </p>
+  </div>
 </div>
 {% endblock content %}

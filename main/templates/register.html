@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
 <title>Register</title>
@@ -6,27 +7,34 @@
 
 {% block content %}
 
-<div class="login">
-  <h1>Register</h1>
-
+<div class="min-h-screen flex items-center justify-center" style="background-image: url('/static/bg.svg'); background-size: 1600px;">
+  <div class="p-8 bg-white rounded-lg shadow-lg max-w-sm w-full form-style my-20">
+    <img src="{% static 'Warmindawg_logo.png' %}" alt="Warmindawg Logo">
+    <h1 class="text-xl font-bold mb-4 mt-4 text-center">
+      <span class="text-2xl font-extrabold text-red-500">Kenalan yuk!</span>
+    </h1>
   <form method="POST">
     {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input type="submit" name="submit" value="Daftar" /></td>
-      </tr>
-    </table>
+    <div class="space-y-4">
+      {% for field in form %}
+      <div>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.help_text %}
+        <p class="text-xs text-gray-600">{{ field.help_text }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <div>
+        <button type="submit" class="w-full px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+          <strong>Daftar</strong>
+        </button>
+      </div>
+    </div>
   </form>
 
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-</div>
-
+  <p class="mt-4 text-sm text-center">
+    Sudah punya akun? <br />
+    <a href="{% url 'home:login' %}" class="text-red-500 hover:text-red-600 hover:font-semibold">Login di sini</a>
+  </p>
 {% endblock content %}

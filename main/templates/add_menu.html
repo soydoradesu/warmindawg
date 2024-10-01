@@ -1,27 +1,45 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block meta %}
+<title>Buat Menu</title>
+{% endblock meta %}
+
 {% block content %}
-<div class="form-container">
-    <header>
-        <img src="https://i.imgur.com/qm2xL9P.png" alt="logo" class="logo">    
-    </header>
-    <form method="POST" class="flex flex-col gap-5">
-        {% csrf_token %}
-        <div class="grid grid-cols-2 gap-4">
-          {% for field in form %}
-          <div class="flex flex-col gap-2 {% if field.name == 'description' %}col-span-2 items-center{% endif %}">
-            <label for="{{ field.id_for_label }}" class="font-bold"
-              >{{ field.label }}</label
-            >
-            <div>{{ field }}</div>
-          </div>
-          {% endfor %}
+<div class="min-h-screen flex items-center justify-center" style="background-image: url('/static/bg.svg'); background-size: 1600px;">
+  <div class="p-8 bg-white rounded-lg shadow-lg max-w-sm w-full form-style my-20">
+    <img src="{% static 'Warmindawg_logo.png' %}" alt="Warmindawg Logo">
+    <h1 class="text-xl font-bold mb-4 mt-4 text-center">
+      <span class="text-2xl font-extrabold text-red-500">Edit Menu</span>
+    </h1>
+    <form method="POST" action="" class="flex flex-col gap-5">
+      {% csrf_token %}
+      <div class="grid grid-cols-2 gap-4">
+        {% for field in form %}
+        <div class="flex flex-col gap-2 {% if field.name == 'description' %}col-span-2{% endif %}">
+          <label for="{{ field.id_for_label }}" class="font-bold">
+            {{ field.label }}
+          </label>
+          <div>{{ field }}</div>
+          {% if field.errors %}
+          <ul class="list-disc bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mt-2">
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          {% if field.help_text %}
+          <p class="text-xs text-gray-600">{{ field.help_text }}</p>
+          {% endif %}
         </div>
-        <div class="add-menu" style="text-align: center; padding-top: 20px;">
-            <button type ="submit" style="background: #e55300;">
-                <strong>Simpan Menu</strong>
-            </button>
-        </div>
+        {% endfor %}
+      </div>
+      <div class="add-menu text-center pt-5">
+        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:shadow-outline">
+          <strong>Simpan Menu</strong>
+        </button>
+      </div>
     </form>
+  </div>
 </div>
-{% endblock %}
+{% endblock content %}
