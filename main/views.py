@@ -5,12 +5,13 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from .models import Item
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from .models import Item
 from .forms import MenuForm
-
 
 @login_required(login_url='/login')
 def show_home(request):
@@ -50,13 +51,13 @@ def show_home(request):
     # Combining default items with database items
     all_items = list(chain(default_items, db_items))
 
-    my_entry = Item.objects.filter(user=request.user)
+    # my_entry = Item.objects.filter(user=request.user)
 
     context = {
         'nama': 'Valentino Kim Fernando',
         'kelas': 'PBP F',
         'items': all_items,
-        'my_items': my_entry,
+        # 'my_items': my_entry,
         'logo' : 'https://i.imgur.com/qm2xL9P.png',
         'last_login': request.COOKIES['last_login'],
     }
@@ -73,6 +74,22 @@ def add_menu_item(request):
         return redirect('/')
     
     return render(request, 'add_menu.html', {'form': form})
+
+@csrf_exempt
+@require_POST
+def add_menu_item_ajax(request):
+    name = request.POST.get("name")
+    price = request.POST.get("price")
+    description = request.POST.get("description")
+    image = request.POST.get("image")
+    user = request.user
+
+    new_food = Item(name=name, price=price,
+                    description=description, image=image, 
+                    user=user)
+    new_food.save()
+
+    return HttpResponse(b"CREATED", status=201)
 
 def register(request):
     form = UserCreationForm()
@@ -96,6 +113,9 @@ def login_user(request):
             response = HttpResponseRedirect(reverse("home:show_home"))
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
+      
+      else:
+            messages.error(request, 'Username atau password kamu salah!')
 
    else:
       form = AuthenticationForm(request)
@@ -109,11 +129,13 @@ def logout_user(request):
     return response
 
 def menu_list_json(request):
-    data = serializers.serialize('json', Item.objects.all())
+    # data = serializers.serialize('json', Item.objects.all())
+    data = Item.objects.filter(user=request.user)
     return HttpResponse(data, content_type='application/json')
 
 def menu_list_xml(request):
-    data = serializers.serialize('xml', Item.objects.all())
+    # data = serializers.serialize('xml', Item.objects.all())
+    data = Item.objects.filter(user=request.user)
     return HttpResponse(data, content_type='application/xml')
 
 def menu_detail_json(request, pk):
