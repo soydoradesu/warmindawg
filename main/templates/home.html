@@ -17,6 +17,9 @@
                 <strong>Tambahkan Menu</strong>
             </button>
         </a>
+        <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+          Add New Mood Entry by AJAX
+        </button>
     </div>
     <p style="text-align: center;">
         🔥🧑🏻‍🍳 Pemasak Warmindawg hari ini: <br /> 
@@ -108,25 +111,25 @@
           </div>
           <!-- Modal body -->
           <div class="px-6 py-4 space-y-6 form-style">
-            <form id="moodEntryForm">
+            <form id="itemEntryForm">
               <div class="mb-4">
-                <label for="mood" class="block text-sm font-medium text-gray-700">Mood</label>
-                <input type="text" id="mood" name="mood" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Enter your mood" required>
+                <label for="item" class="block text-sm font-medium text-gray-700">Mood</label>
+                <input type="text" id="item" name="item" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Enter your mood" required>
               </div>
               <div class="mb-4">
                 <label for="feelings" class="block text-sm font-medium text-gray-700">Feelings</label>
                 <textarea id="feelings" name="feelings" rows="3" class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Describe your feelings" required></textarea>
               </div>
               <div class="mb-4">
-                <label for="moodIntensity" class="block text-sm font-medium text-gray-700">Mood Intensity (1-10)</label>
-                <input type="number" id="moodIntensity" name="mood_intensity" min="1" max="10" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" required>
+                <label for="item" class="block text-sm font-medium text-gray-700">Mood Intensity (1-10)</label>
+                <input type="number" id="item" name="item" min="1" max="10" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" required>
               </div>
             </form>
           </div>
           <!-- Modal footer -->
           <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end">
             <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg" id="cancelButton">Cancel</button>
-            <button type="submit" id="submitMoodEntry" form="moodEntryForm" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+            <button type="submit" id="submitItemEntry" form="itemEntryForm" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg">Save</button>
           </div>
         </div>
       </div>
@@ -175,12 +178,12 @@
                         <strong>Added by:</strong> ${ item.fields.user.username }
                     </p>
                         <div style="justify-content: center; text-align: center; display: flex; gap: 12px; margin-bottom: 20px" class="pt-4">
-                            <a href="{% url 'home:edit_menu' item.pk %}">
+                            <a href="/edit_menu/${item.pk}">
                                 <button  class="w-full px-10 py-2 text-white bg-orange-500 hover:bg-orange-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-opacity-50">
                                     <strong>Ubah</strong>
                                 </button>
                             </a>
-                            <a href="{% url 'home:delete_item' item.pk %}">
+                            <a href="/delete_item/${item.pk}">
                                 <button class="w-full px-10 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
                                     <strong>Hapus</strong>
                                 </button>
@@ -193,5 +196,52 @@
         document.getElementById("item_entry_cards").className = htmlString;
     }
     refreshItemEntries();
+
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+
+    function showModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modal.classList.remove('hidden'); 
+        setTimeout(() => {
+            modalContent.classList.remove('opacity-0', 'scale-95');
+            modalContent.classList.add('opacity-100', 'scale-100');
+        }, 50); 
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 150); 
+    }
+
+    document.getElementById("cancelButton").addEventListener("click", hideModal);
+    document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+
+    function addItemEntry() {
+        fetch("{% url 'home:add_menu_item_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#itemEntryForm')),
+        })
+        .then(response => refreshItemEntries())
+
+        document.getElementById("itemEntryForm").reset(); 
+        document.querySelector("[data-modal-toggle='crudModal']").click();
+
+        return false;
+    }
+    
+    document.getElementById("itemEntryForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            addItemEntry();
+        })
 </script>
 {% endblock content %} 

@@ -75,22 +75,6 @@ def add_menu_item(request):
     
     return render(request, 'add_menu.html', {'form': form})
 
-@csrf_exempt
-@require_POST
-def add_menu_item_ajax(request):
-    name = request.POST.get("name")
-    price = request.POST.get("price")
-    description = request.POST.get("description")
-    image = request.POST.get("image")
-    user = request.user
-
-    new_food = Item(name=name, price=price,
-                    description=description, image=image, 
-                    user=user)
-    new_food.save()
-
-    return HttpResponse(b"CREATED", status=201)
-
 def register(request):
     form = UserCreationForm()
 
@@ -165,3 +149,19 @@ def delete_item(request, pk):
     item = Item.objects.get(pk=pk)
     item.delete()
     return HttpResponseRedirect(reverse('home:show_home'))
+
+@csrf_exempt
+@require_POST
+def add_menu_item_ajax(request):
+    name = request.POST.get("name")
+    price = request.POST.get("price")
+    description = request.POST.get("description")
+    image = request.POST.get("image")
+    user = request.user
+
+    new_food = Item(name=name, price=price,
+                    description=description, image=image, 
+                    user=user)
+    new_food.save()
+
+    return HttpResponse(b"CREATED", status=201)
