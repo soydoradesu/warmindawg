@@ -295,7 +295,7 @@ Secara otomatis, Django akan mengambil username dari active user dan juga variab
 - Website bisa dipakai :D
 </details>
 
-<details open>
+<details>
     <summary><h2>Tugas Individu 5</h2></summary>
 
 ## 1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
@@ -532,4 +532,221 @@ Flexbox dan Grid Layout adalah dua sistem tata letak CSS yang memudahkan pengatu
 Lalu menggunakan {% include navbar.html %} pada template yang ingin dipakaikan navbar
 
 Page dapat digunakan!
+</details>
+
+<details open>
+    <summary><h2>Tugas Individu 5</h2></summary>
+
+## 1. Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+- Membuat web menjadi interaktif: JavaScript memungkinkan developer untuk membuat halaman web yang interaktif. Contoh simpelnya adalah aksi klik tombol, pengiriman form, animasi, dan respon terhadap event keyboard atau mouse bisa dihandle secara dinamis tanpa perlu memuat ulang halaman.
+- Menyambung dari yang sebelumnya, JavaScript dapat menjalankan proses secara asinkronus menggunakan AJAX, memungkinkan aplikasi web untuk memuat data di background. Hal ini mengurangi waktu tunggu dan mempercepat respons aplikasi.
+- Peningkatan UX: Dengan JavaScript, pengembang dapat merancang UI yang responsif dan dinamis yang meningkatkan UX secara keseluruhan.
+- Ekosistem yang Luas: JavaScript memiliki ekosistem yang besar termasuk library, frameworks, dan tools yang mendukung berbagai jenis pengembangan aplikasi.
+
+## 2. Jelaskan fungsi dari penggunaan `await` ketika kita menggunakan `fetch()`! Apa yang akan terjadi jika kita tidak menggunakan `await`?
+- `await` digunakan dalam function `async` untuk menunda eksekusi fungsi sampai `Promise` yang di-return oleh `fetch()` diselesaikan, artinya kode setelah `await` tidak akan dieksekusi sampai data yang di-fetch diterima.
+- Jika kita tidak menggunakan  `await` dengan `fetch()`, kode berikutnya akan terus berjalan tanpa menunggu `fetch()` selesai. Ini berarti bahwa operasi yang bergantung pada data yang di-fetch mungkin akan gagal atau mengakses data yang belum siap/tersedia, mengakibatkan bug atau perilaku-perilaku tidak terduga lainnya dalam aplikasi.
+
+## 3. Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX `POST`?
+- `csrf_exempt`: Decorator ini digunakan untuk menandai view tertentu agar terkecualian dari pemeriksaan CSRF, yang berguna untuk endpoint API yang mungkin dipanggil oleh klien yang tidak menyediakan CSRF token secara default, seperti pada beberapa implementasi AJAX atau ketika API dipanggil dari luar domain. Django secara default menggunakan CSRF token untuk mencegah serangan Cross-Site Request Forgery, di mana token ini harus disertakan dalam setiap permintaan POST untuk verifikasi.
+
+## 4. Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+- Validasi atau pembersihan data di frontend bisa di-bypass atau dimodifikasi oleh pengguna, sehingga melakukan validasi lagi di backend menambah lapisan keamanan tambahan.
+- Pencegahan Serangan: Melakukan pembersihan dan validasi di backend membantu mencegah serangan seperti SQL Injection, Cross-Site Scripting (XSS), dan serangan injeksi lain yang bisa mengeksploitasi input pengguna yang tidak aman.
+
+## 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+1. AJAX `GET`:
+- Menambahkan import pada `views.py`
+    ```python
+    from django.views.decorators.csrf import csrf_exempt
+    from django.views.decorators.http import require_POST
+    ```
+
+- Menambahkan fungsi baru pada `views,py` bernama  `add_menu_item_ajax`
+    ```python
+    @csrf_exempt
+    @require_POST
+    def add_menu_item_ajax(request):
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        image = request.POST.get("image")
+        user = request.user
+        username = user
+
+        new_food = Item(name=name, price=price,
+                        description=description, image=image, 
+                        user=user, username=username)
+        new_food.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    ```
+- Jangan lupa untuk menambah route ke `urls.py` sebelum menambah route juga jangan lupa untuk meng-import fungsi yang ingin ditambahkan rutenya pada `urls.py`
+    ```python
+    urlpatterns = [
+        ...
+        path('add-menu-ajax/', add_menu_item_ajax, name='add_menu_item_ajax'),   
+        ]
+    ```
+- Untuk menghubungkan `add_menu_item_ajax`, kita membuat fungsi di dalam tag JavaScript pada `home.html`
+```javascript
+    function addItemEntry() {
+        fetch("{% url 'home:add_menu_item_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#itemEntryForm')),
+        })
+        .then(response => refreshItemEntries())
+
+        document.getElementById("itemEntryForm").reset(); 
+        document.querySelector("[data-modal-toggle='crudModal']").click();
+
+        return false;
+    }
+    
+    document.getElementById("itemEntryForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            addItemEntry();
+        })
+```
+- Input dari `add_menu_item_ajax` dilakukan dengan modul, berikut merupakan kode html dan juga logic untuk `showModal` dan `closeModal`
+```html
+    <div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+        <div id="crudModalContent" class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+          <!-- Modal header -->
+          <div class="flex items-center justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">
+              Add New Mood Entry
+            </h3>
+            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" id="closeModalBtn">
+              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="px-6 py-4 space-y-6 form-style">
+            <form id="itemEntryForm">
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
+                    <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-red-700" placeholder="Masukkan nama produk" required>
+                  </div>
+                
+                  <!-- Price Field -->
+                  <div class="mb-4">
+                    <label for="price" class="block text-sm font-medium text-gray-700">Harga (Rp[HARGAMU].000)</label>
+                    <input type="number" id="price" name="price" min="1" max="100000" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-red-700" placeholder="Masukkan harga produk" required>
+                  </div>
+                
+                  <!-- Description Field -->
+                  <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <textarea id="description" name="description" rows="3" class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-red-700" placeholder="Masukkan deskripsi produk" required></textarea>
+                  </div>
+                
+                  <!-- Image Field -->
+                  <div class="mb-4">
+                    <label for="image" class="block text-sm font-medium text-gray-700">Image (URL)</label>
+                    <input type="text" id="image" name="image" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-red-700" placeholder="Masukkan URL gambar" required>
+                  </div>
+            </form>
+          </div>
+          <!-- Modal footer -->
+          <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end">
+            <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg" id="cancelButton">Cancel</button>
+            <button type="submit" id="submitItemEntry" form="itemEntryForm" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+          </div>
+        </div>
+      </div>
+```
+```javascript
+        const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+
+    function showModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modal.classList.remove('hidden'); 
+        setTimeout(() => {
+            modalContent.classList.remove('opacity-0', 'scale-95');
+            modalContent.classList.add('opacity-100', 'scale-100');
+        }, 50); 
+    }
+
+    function hideModal() {
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 150); 
+    }
+
+    document.getElementById("cancelButton").addEventListener("click", hideModal);
+    document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+```
+- Selanjutnya tambahkan fungsi `refreshItemEntries` dan juga `getItemEntries` sehingga update dari modul bisa ditampilkan secara asinkronus
+```javascript
+    async function getItemEntries(){
+        return fetch("{% url 'home:menu_list_json' %}").then((res) => res.json())
+    }
+
+    async function refreshItemEntries(){
+        document.getElementById("item_entry_cards").innerHTML = "";
+        document.getElementById("item_entry_cards").className = "";
+        const itemEntries = await getItemEntries();
+        let htmlString = "";
+        let classNameString = "";
+
+        if (itemEntries.length === 0 ) {
+            classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+            htmlString = `
+                <h3 class="text-center pt-4">
+                    <strong>Kamu belum memasukkan menu!</strong>
+                </h3>
+            `;
+        }
+        else {
+            classNameString = "flex flex-wrap justify-center list-none";
+            itemEntries.forEach((item) => {
+                htmlString += `
+                <li>
+                    <img src="${item.fields.image}" alt="${item.fields.name}" class="fixed-image">
+                    <p class="pt-4">
+                        <strong>${item.fields.name}</strong>
+                    </p>
+                    <p class="text-red-500 font-bold">
+                        Rp${item.fields.price}.000
+                    </p>
+                    <p class="product-description pt-4">
+                        ${item.fields.description}
+                    </p>
+                    <p class="product-description pt-4">
+                        <strong>Added by:</strong> ${item.fields.username}
+                    </p>
+                    <div style="justify-content: center; text-align: center; display: flex; gap: 12px; margin-bottom: 20px" class="pt-4">
+                        <a href="/edit-menu/${item.pk}">
+                            <button class="w-full px-10 py-2 text-white bg-orange-500 hover:bg-orange-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-opacity-50">
+                                <strong>Ubah</strong>
+                            </button>
+                        </a>
+                        <a href="/delete/${item.pk}">
+                            <button class="w-full px-10 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                                <strong>Hapus</strong>
+                            </button>
+                        </a>
+                    </div>
+                </li>
+            `;
+        })}
+        document.getElementById("item_entry_cards").className = classNameString;
+        document.getElementById("item_entry_cards").innerHTML = htmlString;
+    }
+    refreshItemEntries();
+```
+- Web dapat digunakan :D
 </details>
