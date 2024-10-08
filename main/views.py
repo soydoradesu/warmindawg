@@ -115,20 +115,20 @@ def logout_user(request):
 def menu_list_json(request):
     # data = serializers.serialize('json', Item.objects.all())
     data = Item.objects.filter(user=request.user)
-    return HttpResponse(data, content_type='application/json')
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def menu_list_xml(request):
     # data = serializers.serialize('xml', Item.objects.all())
     data = Item.objects.filter(user=request.user)
-    return HttpResponse(data, content_type='application/xml')
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def menu_detail_json(request, pk):
     data = serializers.serialize('json', [Item.objects.get(pk=pk)])
-    return HttpResponse(data, content_type='application/json')
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def menu_detail_xml(request, pk):
     data = serializers.serialize('xml', [Item.objects.get(pk=pk)])
-    return HttpResponse(data, content_type='application/xml')
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def edit_menu(request, pk):
     # Get mood entry berdasarkan id
