@@ -158,10 +158,11 @@ def add_menu_item_ajax(request):
     description = request.POST.get("description")
     image = request.POST.get("image")
     user = request.user
+    username = user
 
     new_food = Item(name=name, price=price,
                     description=description, image=image, 
-                    user=user)
+                    user=user, username=username)
     new_food.save()
 
     return HttpResponse(b"CREATED", status=201)
