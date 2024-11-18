@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Item
 from .forms import MenuForm
+import json
 
 @login_required(login_url='/login')
 def show_home(request):
@@ -166,3 +167,36 @@ def add_menu_item_ajax(request):
     new_food.save()
 
     return HttpResponse(b"CREATED", status=201)
+
+@csrf_exempt
+def create_menu_flutter(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            
+            image_data = data.get('image_url', '') 
+            
+            new_product = Item.objects.create(
+                user=request.user,
+                name=data['nama'], 
+                price=int(data['harga']),
+                description=data['deskripsi'],
+                quantity=int(data['stok']),
+                image=image_data  
+            )
+            
+            return JsonResponse({
+                "status": "success",
+                "message": "Product berhasil ditambahkan!"
+            }, status=200)
+            
+        except Exception as e:
+            return JsonResponse({
+                "status": "error",
+                "message": str(e)
+            }, status=400)
+            
+    return JsonResponse({
+        "status": "error",
+        "message": "Invalid request method"
+    }, status=401)

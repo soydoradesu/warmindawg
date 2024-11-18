@@ -6,3 +6,4 @@ requests
 urllib3
 pillow
 sqlite3
+django-cors-headers
