@@ -7,6 +7,7 @@ class Item(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     description = models.TextField()
+    quantity = models.IntegerField()
     image = models.CharField(max_length=255)
 
     def __str__(self):

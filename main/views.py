@@ -24,6 +24,7 @@ def show_home(request):
             'name': 'Es Kulkul Uni Bakwan', 
             'price': 70, 
             'description': 'Es Kulkul Uni Bakwan, es asli dari Uni Bakwan Onde Mande',
+            'quantity': 10,
             'image': 'https://i.pinimg.com/736x/42/b1/22/42b12243ca70053a7c6f22241787f271.jpg'
         },
         {
@@ -33,6 +34,7 @@ def show_home(request):
             'name': 'Ayam Goreng Bunda Mewing', 
             'price': 25, 
             'description': 'Merupakan salah satu ayam goreng langka yang dibuat oleh bunda yang mewing.',
+            'quantity': 73,
             'image': 'https://steamuserimages-a.akamaihd.net/ugc/2270441744978599352/3A97A06E3670819C1E5A4525DED7FBF4DAC5DE21/?imw=512&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false'
         },
         {
@@ -42,6 +44,7 @@ def show_home(request):
             'name': 'Mie Keriting', 
             'price': 16, 
             'description': 'Mie keriting! AWAS bisa membuatmu giting...',
+            'quantity': 100,
             'image': 'https://i.ytimg.com/vi/-7uwIsEe1jY/maxresdefault.jpg'
         }
     ]
@@ -173,16 +176,12 @@ def create_menu_flutter(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            
-            image_data = data.get('image_url', '') 
-            
+                        
             new_product = Item.objects.create(
                 user=request.user,
                 name=data['nama'], 
                 price=int(data['harga']),
                 description=data['deskripsi'],
-                quantity=int(data['stok']),
-                image=image_data  
             )
             
             return JsonResponse({
